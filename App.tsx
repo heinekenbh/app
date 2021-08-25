@@ -1,8 +1,7 @@
 import React from 'react'
 import { StatusBar } from 'react-native'
 
-import { AppContainer, Title, Text } from './src/styles/global'
-import { Button, Input, FormInput } from './src/components'
+import { AppContainer, Text } from './src/styles/global'
 
 const App: React.FC = () => (
   <AppContainer>
@@ -11,14 +10,7 @@ const App: React.FC = () => (
       backgroundColor="transparent"
       translucent
     />
-    <Title>Login</Title>
-    <Text>Login</Text>
-    <Input />
-    <FormInput />
-    <Button onPress={() => console.log('clicou')}>Entrar</Button>
-    <Button onPress={() => console.log('clicou')} disabled>
-      Entrar
-    </Button>
+    <Text>Hello World</Text>
   </AppContainer>
 )
 

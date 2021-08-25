@@ -1,23 +1,35 @@
 import React, { useState } from 'react'
 
 import Input, { InputProps } from './Input'
-import { InputLabel } from '../styles/components/FormInput'
+import {
+  InputLabel,
+  ErrorArea,
+  ErrorText,
+} from '../styles/components/FormInput'
 
-export type FormInputProps = InputProps
+export type FormInputProps = {
+  error?: string
+} & InputProps
 
-const FormInput: React.FC<FormInputProps> = () => {
+const FormInput: React.FC<FormInputProps> = ({ error, ...rest }) => {
   const [isFocused, setIsFocused] = useState(false)
-  const [hasError, setHasError] = useState(false)
 
   return (
     <>
-      <InputLabel focus={isFocused} error={hasError}>
+      <InputLabel focus={isFocused} error={!!error}>
         Label:
       </InputLabel>
       <Input
         onFocus={() => setIsFocused(true)}
         onBlur={() => setIsFocused(false)}
+        hasError={!!error}
+        {...rest}
       />
+      {error && (
+        <ErrorArea>
+          <ErrorText>{error}</ErrorText>
+        </ErrorArea>
+      )}
     </>
   )
 }

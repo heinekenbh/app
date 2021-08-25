@@ -6,14 +6,19 @@ import {
 } from 'react-native'
 
 import { InputContainer } from '../styles/components/Input'
+import theme from '../styles/theme'
 
 export type InputProps = {
-  onError?(): void
+  hasError?: boolean
 } & TextInputProps
 
-const Input: React.FC<InputProps> = ({ onFocus, onBlur, ...rest }) => {
+const Input: React.FC<InputProps> = ({
+  onFocus,
+  onBlur,
+  hasError,
+  ...rest
+}) => {
   const [isFocused, setIsFocused] = useState(false)
-  const [hasError, setHasError] = useState(false)
 
   const handleFocus = (e: NativeSyntheticEvent<TextInputFocusEventData>) => {
     if (isFocused) onBlur && onBlur(e)
@@ -26,6 +31,7 @@ const Input: React.FC<InputProps> = ({ onFocus, onBlur, ...rest }) => {
     <InputContainer
       focus={isFocused}
       error={hasError}
+      placeholderTextColor={theme.textSecondary}
       onFocus={e => handleFocus(e)}
       onBlur={e => handleFocus(e)}
       {...rest}

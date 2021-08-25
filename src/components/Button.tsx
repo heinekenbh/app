@@ -3,12 +3,18 @@ import { TouchableOpacityProps } from 'react-native'
 
 import { ButtonContainer, TextButton } from '../styles/components/Button'
 
-export type ButtonProps = {
-  text?: string
-} & TouchableOpacityProps
+export type ButtonProps = TouchableOpacityProps
 
-const Button: React.FC<ButtonProps> = ({ disabled, ...rest }) => {
+const Button: React.FC<ButtonProps> = ({ children, disabled, ...rest }) => {
   const getType = () => (disabled ? 'disabled' : 'primary')
+
+  const renderChildren = () => {
+    if (typeof children === 'string') {
+      return <TextButton type={getType()}>{children}</TextButton>
+    }
+
+    return children
+  }
 
   return (
     <ButtonContainer
@@ -17,7 +23,7 @@ const Button: React.FC<ButtonProps> = ({ disabled, ...rest }) => {
       disabled={disabled}
       {...rest}
     >
-      <TextButton type={getType()}>Entrar</TextButton>
+      {renderChildren()}
     </ButtonContainer>
   )
 }
