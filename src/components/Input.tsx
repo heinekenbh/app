@@ -32,6 +32,7 @@ const Input: React.FC<InputProps> = ({
       focus={isFocused}
       error={hasError}
       placeholderTextColor={theme.textSecondary}
+      selectionColor={theme.secondary}
       onFocus={e => handleFocus(e)}
       onBlur={e => handleFocus(e)}
       {...rest}
