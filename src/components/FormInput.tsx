@@ -12,7 +12,12 @@ export type FormInputProps = {
   error?: string
 } & InputProps
 
-const FormInput: React.FC<FormInputProps> = ({ label, error, ...rest }) => {
+const FormInput: React.FC<FormInputProps> = ({
+  label,
+  error,
+  multiline,
+  ...rest
+}) => {
   const [isFocused, setIsFocused] = useState(false)
 
   return (
@@ -26,6 +31,7 @@ const FormInput: React.FC<FormInputProps> = ({ label, error, ...rest }) => {
         onFocus={() => setIsFocused(true)}
         onBlur={() => setIsFocused(false)}
         hasError={!!error}
+        multiline={multiline}
         {...rest}
       />
       {error && (

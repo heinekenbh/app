@@ -1,7 +1,7 @@
 import React from 'react'
 import { KeyboardAvoidingView, ScrollView, Platform } from 'react-native'
-import { useNavigation } from '@react-navigation/native'
 import { StackNavigationProp } from '@react-navigation/stack'
+import { useNavigation } from '@react-navigation/native'
 
 import { RootStackParamList } from '../routes'
 import { Button, FormInput } from '../components'
@@ -19,7 +19,8 @@ type SignUpCustomerPageProp = StackNavigationProp<
 >
 
 const SignUpCustomerPage: React.FC = () => {
-  const { navigate } = useNavigation<SignUpCustomerPageProp>()
+  const { navigate, replace, popToTop } =
+    useNavigation<SignUpCustomerPageProp>()
 
   const handleSignUpCustomer = () => {
     try {
@@ -64,14 +65,13 @@ const SignUpCustomerPage: React.FC = () => {
           <LinkArea>
             <Text>
               Sou um{' '}
-              <Link onPress={() => navigate('SignUpRestaurantPage')}>
+              <Link onPress={() => replace('SignUpRestaurantPage')}>
                 Restaurante
               </Link>
             </Text>
             <MarginTop />
             <Text>
-              Já tem uma conta?{' '}
-              <Link onPress={() => navigate('SignInPage')}>Entre</Link>
+              Já tem uma conta? <Link onPress={() => popToTop()}>Entre</Link>
             </Text>
           </LinkArea>
         </ScrollView>

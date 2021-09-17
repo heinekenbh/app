@@ -34,6 +34,13 @@ export const Title = styled.Text`
   text-transform: uppercase;
 `
 
+export const Subtitle = styled.Text`
+  color: ${theme.textLight};
+  font-size: 18px;
+  font-weight: bold;
+  text-transform: uppercase;
+`
+
 export const Text = styled.Text`
   color: ${theme.textLight};
   font-size: 12px;
@@ -52,4 +59,11 @@ export const Label = styled.Text`
 
 export const LinkArea = styled.View`
   align-items: center;
+`
+
+export const ListItem = styled.View`
+  padding: 16px;
+  border: 1px solid ${theme.inputBorderAndText};
+  border-radius: 5px;
+  margin: 8px 0;
 `

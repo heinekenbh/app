@@ -1,7 +1,7 @@
 import React from 'react'
 import { KeyboardAvoidingView, Platform } from 'react-native'
-import { useNavigation } from '@react-navigation/native'
 import { StackNavigationProp } from '@react-navigation/stack'
+import { useNavigation } from '@react-navigation/native'
 
 import { RootStackParamList } from '../routes'
 import { Button, FormInput } from '../components'
@@ -17,13 +17,13 @@ import {
 type SignInPageProp = StackNavigationProp<RootStackParamList, 'SignInPage'>
 
 const SignInPage: React.FC = () => {
-  const { navigate } = useNavigation<SignInPageProp>()
+  const { navigate, replace } = useNavigation<SignInPageProp>()
 
   const handleSignIn = () => {
     try {
       console.log('Entrar')
 
-      //navigate('Home')
+      replace('RestaurantBottomTab')
     } catch (err) {
       console.error(err)
     }
