@@ -16,6 +16,7 @@ const Input: React.FC<InputProps> = ({
   onFocus,
   onBlur,
   hasError,
+  multiline,
   ...rest
 }) => {
   const [isFocused, setIsFocused] = useState(false)
@@ -32,8 +33,12 @@ const Input: React.FC<InputProps> = ({
       focus={isFocused}
       error={hasError}
       placeholderTextColor={theme.textSecondary}
+      selectionColor={theme.secondary}
       onFocus={e => handleFocus(e)}
       onBlur={e => handleFocus(e)}
+      numberOfLines={multiline ? 3 : 1}
+      textAlignVertical={multiline ? 'top' : 'center'}
+      multiline={multiline}
       {...rest}
     />
   )
