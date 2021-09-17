@@ -1,17 +1,34 @@
-import React from 'react'
-import { FlatList, ListRenderItemInfo, TouchableOpacity } from 'react-native'
+import React, { useEffect, useState } from 'react'
+import {
+  ActivityIndicator,
+  Alert,
+  FlatList,
+  ListRenderItemInfo,
+  TouchableOpacity,
+} from 'react-native'
 import { StackNavigationProp } from '@react-navigation/stack'
 import { useNavigation } from '@react-navigation/native'
+import MaterialIcons from 'react-native-vector-icons/MaterialIcons'
 
 import { RestaurantMealsStackParamList } from '../routes/RestaurantMealsStackNavigation'
-import { MealModel } from '../models/MealModel'
-import { Center, ListItem, PageContainer } from '../styles/global'
+import resolveException from '../hooks/resolveException'
+import theme from '../styles/theme'
+import {
+  Center,
+  ListItem,
+  ListItemActions,
+  ListItemInfo,
+  PageContainer,
+} from '../styles/global'
+import { IconButton, FABButton } from '../components'
 import {
   MealTitle,
   MealInfo,
   MealPrice,
   NoMealsFoundText,
 } from '../styles/pages/RestaurantMealsPage'
+
+import { MealModel } from '../models/MealModel'
 
 type RestaurantMealsPageProp = StackNavigationProp<
   RestaurantMealsStackParamList,
@@ -21,7 +38,7 @@ type RestaurantMealsPageProp = StackNavigationProp<
 const RestaurantMealsPage: React.FC = () => {
   const { navigate } = useNavigation<RestaurantMealsPageProp>()
 
-  const meals: MealModel[] = [
+  const mealsData: MealModel[] = [
     {
       id: '1',
       name: 'Prato Feito Pequeno',
@@ -174,34 +191,99 @@ const RestaurantMealsPage: React.FC = () => {
     },
   ]
 
+  const [meals, setMeals] = useState<MealModel[]>([])
+  const [loadingMeals, setLoadingMeals] = useState(true)
+
+  const loadMeals = async (): Promise<void> => {
+    try {
+      setMeals(mealsData || [])
+      setLoadingMeals(false)
+    } catch (err) {
+      resolveException(err as Error)
+    }
+  }
+
+  useEffect(() => {
+    loadMeals()
+  }, [])
+
+  const handleDeleteMeal = (meal: MealModel): void => {
+    try {
+      console.log('Excluir refeição')
+
+      setMeals(meals.filter(m => m.id !== meal.id))
+    } catch (err) {
+      resolveException(err as Error)
+    }
+  }
+
+  const handleConfirmDeletionMeal = (meal: MealModel): void => {
+    Alert.alert(
+      'Atenção',
+      `Deseja realmente excluir a refeição "${meal.name}"?`,
+      [
+        { text: 'Não', style: 'cancel' },
+        {
+          text: 'Sim',
+          onPress: () => handleDeleteMeal(meal),
+        },
+      ],
+      {
+        cancelable: true,
+      }
+    )
+  }
+
   const renderItem = ({ item }: ListRenderItemInfo<MealModel>) => (
     <TouchableOpacity
       activeOpacity={0.5}
       onPress={() => navigate('RestaurantMealDetailPage', { meal: item })}
     >
       <ListItem>
-        <MealTitle>{item.name}</MealTitle>
-        <MealInfo>{item.description}</MealInfo>
-        <MealPrice>R$ {item.price.toFixed(2)}</MealPrice>
+        <ListItemInfo>
+          <MealTitle>{item.name}</MealTitle>
+          <MealInfo>{item.description}</MealInfo>
+          <MealPrice>R$ {item.price.toFixed(2)}</MealPrice>
+        </ListItemInfo>
+        <ListItemActions>
+          <IconButton
+            icon={
+              <MaterialIcons name="delete" size={20} color={theme.textLight} />
+            }
+            onPress={() => handleConfirmDeletionMeal(item)}
+          />
+        </ListItemActions>
       </ListItem>
     </TouchableOpacity>
   )
 
-  return meals.length > 0 ? (
-    <FlatList<MealModel>
-      data={meals}
-      style={{ paddingHorizontal: 16 }}
-      keyExtractor={({ id }) => id}
-      renderItem={renderItem}
-    />
-  ) : (
-    <PageContainer>
-      <Center>
-        <NoMealsFoundText>
-          Nenhuma refeição encontrada, cadastre uma para começar.
-        </NoMealsFoundText>
-      </Center>
-    </PageContainer>
+  return (
+    <>
+      {loadingMeals ? (
+        <Center>
+          <ActivityIndicator size="large" color={theme.primary} />
+        </Center>
+      ) : meals.length > 0 ? (
+        <FlatList<MealModel>
+          data={meals}
+          style={{ paddingHorizontal: 16 }}
+          keyExtractor={({ id }) => id}
+          renderItem={renderItem}
+        />
+      ) : (
+        <PageContainer>
+          <Center>
+            <NoMealsFoundText>
+              Nenhuma refeição encontrada, cadastre uma para começar.
+            </NoMealsFoundText>
+          </Center>
+        </PageContainer>
+      )}
+      <FABButton
+        icon={<MaterialIcons name="add" size={40} color={theme.textLight} />}
+        onPress={() => navigate('RestaurantMealDetailPage', { meal: null })}
+      />
+    </>
   )
 }
 

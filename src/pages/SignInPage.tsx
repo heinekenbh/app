@@ -4,6 +4,7 @@ import { StackNavigationProp } from '@react-navigation/stack'
 import { useNavigation } from '@react-navigation/native'
 
 import { RootStackParamList } from '../routes'
+import resolveException from '../hooks/resolveException'
 import { Button, FormInput } from '../components'
 import {
   PageContainer,
@@ -25,7 +26,7 @@ const SignInPage: React.FC = () => {
 
       replace('RestaurantBottomTab')
     } catch (err) {
-      console.error(err)
+      resolveException(err as Error)
     }
   }
 

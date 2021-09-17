@@ -5,6 +5,7 @@ import { useNavigation } from '@react-navigation/native'
 
 import { RootStackParamList } from '../routes'
 import { Button, FormInput } from '../components'
+import resolveException from '../hooks/resolveException'
 import {
   Link,
   PageContainer,
@@ -19,8 +20,7 @@ type SignUpRestaurantPageProp = StackNavigationProp<
 >
 
 const SignUpRestaurantPage: React.FC = () => {
-  const { navigate, replace, popToTop } =
-    useNavigation<SignUpRestaurantPageProp>()
+  const { replace, popToTop } = useNavigation<SignUpRestaurantPageProp>()
 
   const handleSignUpRestaurant = () => {
     try {
@@ -28,7 +28,7 @@ const SignUpRestaurantPage: React.FC = () => {
 
       popToTop()
     } catch (err) {
-      console.error(err)
+      resolveException(err as Error)
     }
   }
 

@@ -3,7 +3,8 @@ import { RouteProp, useNavigation, useRoute } from '@react-navigation/native'
 import { StackNavigationProp } from '@react-navigation/stack'
 
 import { RestaurantMealsStackParamList } from '../routes/RestaurantMealsStackNavigation'
-import { BackButton, FormInput } from '../components'
+import resolveException from '../hooks/resolveException'
+import { BackButton, Button, FormInput } from '../components'
 import { MarginTop, PageContainer } from '../styles/global'
 import { MealModel } from '../models/MealModel'
 
@@ -23,7 +24,27 @@ const RestaurantMealDetailPage: React.FC = () => {
 
   const [meal, setMeal] = useState({} as MealModel)
 
-  useEffect(() => setMeal(params.meal), [])
+  useEffect(() => setMeal(params.meal || ({} as MealModel)), [])
+
+  const handleSaveMeal = () => {
+    try {
+      console.log('Salvar refeição')
+
+      goBack()
+    } catch (err) {
+      resolveException(err as Error)
+    }
+  }
+
+  const handleDeleteMeal = () => {
+    try {
+      console.log('Excluir refeição')
+
+      goBack()
+    } catch (err) {
+      resolveException(err as Error)
+    }
+  }
 
   return (
     <PageContainer>
@@ -49,6 +70,8 @@ const RestaurantMealDetailPage: React.FC = () => {
         value={meal?.price?.toString()}
         onChangeText={value => setMeal({ ...meal, price: parseFloat(value) })}
       />
+      <MarginTop />
+      <Button onPress={() => handleSaveMeal()}>Salvar</Button>
     </PageContainer>
   )
 }

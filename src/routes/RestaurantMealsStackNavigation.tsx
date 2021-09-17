@@ -8,7 +8,7 @@ import { MealModel } from '../models/MealModel'
 
 export type RestaurantMealsStackParamList = {
   RestaurantMealsPage: undefined
-  RestaurantMealDetailPage: { meal: MealModel }
+  RestaurantMealDetailPage: { meal: MealModel | null }
 }
 
 const Stack = createStackNavigator<RestaurantMealsStackParamList>()

@@ -66,4 +66,12 @@ export const ListItem = styled.View`
   border: 1px solid ${theme.inputBorderAndText};
   border-radius: 5px;
   margin: 8px 0;
+  flex-direction: row;
+  align-items: center;
 `
+
+export const ListItemInfo = styled.View`
+  flex: 1;
+`
+
+export const ListItemActions = styled.View``

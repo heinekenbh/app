@@ -4,6 +4,7 @@ import { StackNavigationProp } from '@react-navigation/stack'
 import { useNavigation } from '@react-navigation/native'
 
 import { RootStackParamList } from '../routes'
+import resolveException from '../hooks/resolveException'
 import { Button, FormInput } from '../components'
 import {
   Link,
@@ -28,7 +29,7 @@ const SignUpCustomerPage: React.FC = () => {
 
       navigate('SignInPage')
     } catch (err) {
-      console.error(err)
+      resolveException(err as Error)
     }
   }
 
